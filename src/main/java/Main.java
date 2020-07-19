@@ -7,13 +7,27 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     @Override
+    public void init() {
+        System.out.println("Metoda init");
+
+    }
+
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        System.out.println("Metoda start");
+//        Parent root = FXMLLoader.load(getClass().getResource("/view/sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/view/loginView.fxml"));
+
+        primaryStage.setTitle("Logowanie");
+
+        primaryStage.setScene(new Scene(root));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
+    @Override
+    public void stop() {
+        System.out.println("Metoda stop");
+    }
 
     public static void main(String[] args) {
         launch(args);
