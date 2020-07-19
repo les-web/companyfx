@@ -10,9 +10,9 @@ public interface UserData {
     List<User> users = new ArrayList<>(Arrays.asList(
             new User("a@a.pl" , "a", true),
             new User("b@b.pl" , "b", true),
-            new User("c@a.pl" , "c", true),
-            new User("d@a.pl" , "d", true),
-            new User("e@a.pl" , "e", true)
+            new User("c@c.pl" , "c", true),
+            new User("d@d.pl" , "d", true),
+            new User("e@e.pl" , "e", true)
 
             ));
 }
