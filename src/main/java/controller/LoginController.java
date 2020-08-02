@@ -6,16 +6,22 @@ package controller;
  */
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import utility.UserData;
 
 public class LoginController {
@@ -33,7 +39,7 @@ public class LoginController {
     private PasswordField pfPassword; // Value injected by FXMLLoader
 //metoda dostarczajaca logike  do logowania
 
-    private void login() {
+    private void login() throws IOException {
         boolean isLogged = UserData.users.stream()
                 .anyMatch(user ->
                         user.getEmail().equals(tfLogin.getText()) &&
@@ -42,6 +48,18 @@ public class LoginController {
             System.out.println("zalogowano");
             tfLogin.setStyle(null);
             pfPassword.setStyle(null);
+            Stage primaryStage = new Stage();
+
+            Parent root = FXMLLoader.load(getClass().getResource("/view/companyView.fxml"));
+
+            primaryStage.setTitle("Aplikacja magazynowa");
+            primaryStage.initStyle(StageStyle.UNDECORATED); // brak przyciskow w tytule okna
+            primaryStage.setScene(new Scene(root));
+            primaryStage.setResizable(true); // brak skalowania
+            primaryStage.show();
+// zamkniecie okna logowania
+            Stage loginStage = (Stage) tfLogin.getScene().getWindow();
+            loginStage.close();
         } else {
             System.out.println("nie zalogowano");
             tfLogin.clear();
@@ -53,13 +71,13 @@ public class LoginController {
     }
 
     @FXML
-    void loginAction(ActionEvent event) {
+    void loginAction(ActionEvent event) throws IOException {
         login();
     }
 
     @FXML
         // wcisniecie Enter w dowolnym miejscu na oknie aplikacji (vbox)
-    void keyLoginAction(KeyEvent event) {
+    void keyLoginAction(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
             login();
         } else if (event.getCode() == KeyCode.ESCAPE) {

@@ -1,7 +1,11 @@
 package controller;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -9,6 +13,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
+import java.io.IOException;
 
 public class CompanyController {
 
@@ -55,7 +63,7 @@ public class CompanyController {
 
     @FXML
     void closeAction(ActionEvent event) {
-
+        Platform.exit();
     }
 
     @FXML
@@ -69,8 +77,19 @@ public class CompanyController {
     }
 
     @FXML
-    void logoutAction(ActionEvent event) {
+    void logoutAction(ActionEvent event) throws IOException {
+        Stage primaryStage = new Stage();
 
+        Parent root = FXMLLoader.load(getClass().getResource("/view/loginView.fxml"));
+
+        primaryStage.setTitle("Logowanie");
+        primaryStage.initStyle(StageStyle.UNDECORATED); // brak przyciskow w tytule okna
+        primaryStage.setScene(new Scene(root));
+        primaryStage.setResizable(true); // brak skalowania
+        primaryStage.show();
+// zamkniecie okna logowania
+        Stage loginStage = (Stage) btn_delete.getScene().getWindow();
+        loginStage.close();
     }
 
     @FXML
