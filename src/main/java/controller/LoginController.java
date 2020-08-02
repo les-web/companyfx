@@ -53,9 +53,9 @@ public class LoginController {
             Parent root = FXMLLoader.load(getClass().getResource("/view/companyView.fxml"));
 
             primaryStage.setTitle("Aplikacja magazynowa");
-            primaryStage.initStyle(StageStyle.UNDECORATED); // brak przyciskow w tytule okna
+            //      primaryStage.initStyle(StageStyle.UNDECORATED); // brak przyciskow w tytule okna
             primaryStage.setScene(new Scene(root));
-            primaryStage.setResizable(true); // brak skalowania
+            //        primaryStage.setResizable(false); // brak skalowania
             primaryStage.show();
 // zamkniecie okna logowania
             Stage loginStage = (Stage) tfLogin.getScene().getWindow();
