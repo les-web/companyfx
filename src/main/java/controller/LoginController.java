@@ -9,10 +9,13 @@ package controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import utility.UserData;
 
 public class LoginController {
@@ -28,9 +31,9 @@ public class LoginController {
 
     @FXML // fx:id="pfPassword"
     private PasswordField pfPassword; // Value injected by FXMLLoader
+//metoda dostarczajaca logike  do logowania
 
-    @FXML
-    void loginAction(ActionEvent event) {
+    private void login() {
         boolean isLogged = UserData.users.stream()
                 .anyMatch(user ->
                         user.getEmail().equals(tfLogin.getText()) &&
@@ -47,7 +50,21 @@ public class LoginController {
             tfLogin.setStyle("-fx-border-color: red; -fx-border-width: 3px");
             pfPassword.setStyle("-fx-border-color: red; -fx-border-width: 3px");
         }
+    }
 
+    @FXML
+    void loginAction(ActionEvent event) {
+        login();
+    }
+
+    @FXML
+        // wcisniecie Enter w dowolnym miejscu na oknie aplikacji (vbox)
+    void keyLoginAction(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            login();
+        } else if (event.getCode() == KeyCode.ESCAPE) {
+            Platform.exit(); // zamkniecie okna
+        }
     }
 
     @FXML
