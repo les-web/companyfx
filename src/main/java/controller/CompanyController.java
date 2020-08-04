@@ -18,10 +18,7 @@ import javafx.stage.StageStyle;
 import model.Category;
 import model.Product;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Locale;
@@ -108,20 +105,27 @@ public class CompanyController {
         setProductsIntoTable();
     }
 
-  //  private String usersFilePath = "C:\\tarr5_java_adv\\src\\main\\resources\\file\\users.csv";
+    //  private String usersFilePath = "C:\\tarr5_java_adv\\src\\main\\resources\\file\\users.csv";
 
 
     public void saveProductsToFile() {
         try {
-            PrintWriter pw = new PrintWriter(new File(path));
-            
-            products.stream().map(product -> String.format(
-                    "%d;%s;%s;%s;%s",
-                    product.getId(), product.getName(), product.getCategory(),
-                    product.getPrice(), product.getQuantity()
-            )).forEach(pw::println);
+            //       PrintWriter pw = new PrintWriter(new File(path));
+            FileWriter pw = new FileWriter(new File(path));
+            pw.append("id;nazwa;kategoria;cena;lość" + "\n");
+            //           fileWriter.append(String.valueOf(number) + "\n");
+            for (Product product : products) {
+                String format = String.format(
+                        "%s;%s;%s;%s;%s",
+                        product.getId(), product.getName(), product.getCategory(),
+                        product.getPrice(), product.getQuantity()
+                );
+                pw.append(format + "\n");
+            }
             pw.close();
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -170,6 +174,7 @@ public class CompanyController {
                 products.add(new Product(products.stream().mapToInt(p -> p.getId()).max().getAsInt() + 1,
                         tf_productName.getText(), combo_productCategory.getValue(),
                         Double.valueOf(tf_productPrice.getText()), Integer.valueOf(tf_productQuantity.getText())));
+                saveProductsToFile();
             }
         }
     }
