@@ -113,7 +113,7 @@ public class CompanyController {
             pw.append("id;nazwa;kategoria;cena;lość" + "\n");
             for (Product product : products) {
                 String format = String.format(
-                        "%s;%s;%s;%s;%s",
+                        "%s;%s;%s;%d;%s",
                         product.getId(), product.getName(), product.getCategory(),
                         product.getPrice(), product.getQuantity()
                 );
