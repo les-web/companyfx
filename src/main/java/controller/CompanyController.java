@@ -105,15 +105,12 @@ public class CompanyController {
         setProductsIntoTable();
     }
 
-    //  private String usersFilePath = "C:\\tarr5_java_adv\\src\\main\\resources\\file\\users.csv";
-
 
     public void saveProductsToFile() {
         try {
-            //       PrintWriter pw = new PrintWriter(new File(path));
+
             FileWriter pw = new FileWriter(new File(path));
             pw.append("id;nazwa;kategoria;cena;lość" + "\n");
-            //           fileWriter.append(String.valueOf(number) + "\n");
             for (Product product : products) {
                 String format = String.format(
                         "%s;%s;%s;%s;%s",
@@ -174,7 +171,7 @@ public class CompanyController {
                 products.add(new Product(products.stream().mapToInt(p -> p.getId()).max().getAsInt() + 1,
                         tf_productName.getText(), combo_productCategory.getValue(),
                         Double.valueOf(tf_productPrice.getText()), Integer.valueOf(tf_productQuantity.getText())));
-                saveProductsToFile();
+                              saveProductsToFile();
             }
         }
     }
