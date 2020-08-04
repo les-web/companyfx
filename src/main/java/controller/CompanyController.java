@@ -21,6 +21,7 @@ import model.Product;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Locale;
@@ -52,6 +53,7 @@ public class CompanyController {
     private Button btn_update;
     @FXML
     private Button btn_delete;
+
     @FXML
     void logoutAction(ActionEvent event) throws IOException {
         Stage primaryStage = new Stage();
@@ -64,28 +66,34 @@ public class CompanyController {
         Stage companyStage = (Stage) btn_delete.getScene().getWindow();
         companyStage.close();
     }
+
     @FXML
     void closeAction(ActionEvent event) {
         Platform.exit();
     }
+
     private ObservableList<Product> products = FXCollections.observableArrayList();
+    String path = Paths.get("").toAbsolutePath().toString() +
+            "\\src\\main\\java\\utility\\products.csv";
+
     private void getProductsFromFile() throws FileNotFoundException {
-        String path = Paths.get("").toAbsolutePath().toString()+
-                "\\src\\main\\java\\utility\\products.csv";
+        //      String path = Paths.get("").toAbsolutePath().toString()+
+        //             "\\src\\main\\java\\utility\\products.csv";
         Scanner scanner = new Scanner(new File(path));
         scanner.nextLine(); // pominięcie nagłówka w pliku .csv
-        while (scanner.hasNextLine()){
-            String line [] = scanner.nextLine().split(";");
+        while (scanner.hasNextLine()) {
+            String line[] = scanner.nextLine().split(";");
             products.add(new Product(
-                    Integer.valueOf(line[0]),line[1],
+                    Integer.valueOf(line[0]), line[1],
                     Arrays.stream(Category.values())                                        // Category []
                             .filter(category -> category.getCategoryName().equals(line[2])) // filtrowanie po nazwie kategorii
                             .findAny()                                                      // Optional<Category>
                             .get(),                                                          // Category
-                    Double.valueOf(line[3]),Integer.valueOf(line[4])));
+                    Double.valueOf(line[3]), Integer.valueOf(line[4])));
         }
     }
-    private void setProductsIntoTable(){
+
+    private void setProductsIntoTable() {
         // konfiguracja wartości wporwadzanych do tabeli z pól klasy modelu Product
         tc_name.setCellValueFactory(new PropertyValueFactory<>("name"));
         tc_category.setCellValueFactory(new PropertyValueFactory<>("category"));
@@ -94,10 +102,30 @@ public class CompanyController {
         // przekazanie wartości do tabeli z ObservableList
         tbl_products.setItems(products);
     }
+
     public void initialize() throws FileNotFoundException {
         getProductsFromFile();
         setProductsIntoTable();
     }
+
+  //  private String usersFilePath = "C:\\tarr5_java_adv\\src\\main\\resources\\file\\users.csv";
+
+
+    public void saveProductsToFile() {
+        try {
+            PrintWriter pw = new PrintWriter(new File(path));
+            
+            products.stream().map(product -> String.format(
+                    "%d;%s;%s;%s;%s",
+                    product.getId(), product.getName(), product.getCategory(),
+                    product.getPrice(), product.getQuantity()
+            )).forEach(pw::println);
+            pw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @FXML
     void addAction(ActionEvent event) {
@@ -131,9 +159,9 @@ public class CompanyController {
         dialog.getDialogPane().getButtonTypes().addAll(btn_ok);
 
         Optional<Product> productOpt = dialog.showAndWait();
-        if(productOpt.isPresent()) {
-            if(!tf_productPrice.getText().matches("[0-9]+\\.{0,1}[0-9]{0,2}") ||
-                    !tf_productQuantity.getText().matches("[0-9]+")){
+        if (productOpt.isPresent()) {
+            if (!tf_productPrice.getText().matches("[0-9]+\\.{0,1}[0-9]{0,2}") ||
+                    !tf_productQuantity.getText().matches("[0-9]+")) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Błąd danych");
                 alert.setHeaderText("Błąd danych. Produkt nie został dodany!");
@@ -145,12 +173,20 @@ public class CompanyController {
             }
         }
     }
+
     @FXML
-    void deleteAction(ActionEvent event) { }
+    void deleteAction(ActionEvent event) {
+    }
+
     @FXML
-    void filterAction(ActionEvent event) { }
+    void filterAction(ActionEvent event) {
+    }
+
     @FXML
-    void selectAction(MouseEvent event) { }
+    void selectAction(MouseEvent event) {
+    }
+
     @FXML
-    void updateAction(ActionEvent event) { }
+    void updateAction(ActionEvent event) {
+    }
 }

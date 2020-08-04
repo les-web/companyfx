@@ -16,10 +16,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="655.0" prefWidth="922.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CompanyController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="655.0" prefWidth="922.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CompanyController">
    <children>
-      <MenuBar>
+      <MenuBar style="-fx-background-color: white;">
         <menus>
           <Menu mnemonicParsing="false" text="Wyjście">
             <items>
@@ -29,7 +28,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="922.0" style="-fx-background-color: yellow;" text="MAGAZYN">
+      <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="922.0" style="-fx-background-color: #48aeda;" text="MAGAZYN" textFill="WHITE">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
@@ -68,19 +67,19 @@
                   <Font name="System Bold Italic" size="15.0" />
                </font>
             </CheckBox>
-            <CheckBox fx:id="cb_more10" mnemonicParsing="false" prefHeight="34.0" prefWidth="609.0" text="ilość &gt; 10">
+            <CheckBox fx:id="cb_more10" mnemonicParsing="false" prefHeight="34.0" prefWidth="436.0" text="ilość &gt; 10">
                <font>
                   <Font name="System Bold Italic" size="15.0" />
                </font>
             </CheckBox>
          </children>
       </HBox>
-      <ComboBox fx:id="combo_category" prefHeight="50.0" prefWidth="927.0" promptText="wybierz kategorię">
+      <ComboBox fx:id="combo_category" prefHeight="35.0" prefWidth="822.0" promptText="wybierz kategorię">
          <VBox.margin>
             <Insets left="50.0" right="50.0" />
          </VBox.margin>
       </ComboBox>
-      <Button mnemonicParsing="false" onAction="#filterAction" prefHeight="31.0" prefWidth="922.0" text="filtruj">
+      <Button mnemonicParsing="false" onAction="#filterAction" prefHeight="31.0" prefWidth="922.0" style="-fx-background-color: #a2dd8e;" text="filtruj" textFill="WHITE">
          <VBox.margin>
             <Insets left="50.0" right="50.0" />
          </VBox.margin>
@@ -92,16 +91,25 @@
       </Label>
       <HBox prefHeight="27.0" prefWidth="922.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#addAction" prefHeight="31.0" prefWidth="923.0" text="dodaj produkt" textFill="#81bc5a">
+            <Button mnemonicParsing="false" onAction="#addAction" prefHeight="31.0" prefWidth="923.0" style="-fx-background-color: green;" text="dodaj produkt" textFill="#f7f8f6">
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
             </Button>
-            <Button fx:id="btn_update" disable="true" mnemonicParsing="false" onAction="#updateAction" prefHeight="31.0" prefWidth="923.0" text="edytujj produkt" />
-            <Button fx:id="btn_delete" disable="true" mnemonicParsing="false" onAction="#deleteAction" prefHeight="31.0" prefWidth="923.0" text="usuń produkt" textFill="#c60c0c">
+            <Button fx:id="btn_update" disable="true" mnemonicParsing="false" onAction="#updateAction" prefHeight="31.0" prefWidth="923.0" style="-fx-background-color: blue;" text="edytuj produkt" textFill="#f5f3f3">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Button>
+            <Button fx:id="btn_delete" disable="true" mnemonicParsing="false" onAction="#deleteAction" prefHeight="31.0" prefWidth="923.0" style="-fx-background-color: #c24444;" text="usuń produkt" textFill="WHITE">
                <HBox.margin>
                   <Insets right="50.0" />
                </HBox.margin>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
             </Button>
          </children>
       </HBox>
