@@ -74,8 +74,6 @@ public class CompanyController {
             "\\src\\main\\java\\utility\\products.csv";
 
     private void getProductsFromFile() throws FileNotFoundException {
-        //      String path = Paths.get("").toAbsolutePath().toString()+
-        //             "\\src\\main\\java\\utility\\products.csv";
         Scanner scanner = new Scanner(new File(path));
         scanner.nextLine(); // pominięcie nagłówka w pliku .csv
         while (scanner.hasNextLine()) {
@@ -88,6 +86,7 @@ public class CompanyController {
                             .get(),                                                          // Category
                     Double.valueOf(line[3]), Integer.valueOf(line[4])));
         }
+        scanner.close();
     }
 
     private void setProductsIntoTable() {
@@ -108,19 +107,24 @@ public class CompanyController {
 
     public void saveProductsToFile() {
         try {
-
             FileWriter pw = new FileWriter(new File(path));
-            pw.append("id;nazwa;kategoria;cena;lość" + "\n");
+            //        pw.append("id;nazwa;kategoria;cena;lość" + "\n");
+            pw.write("id;nazwa;kategoria;cena;lość");
+
+            String format = "";
             for (Product product : products) {
-                String format = String.format(
-                        "%s;%s;%s;%f;%s",
-                        product.getId(),
-                        product.getName(),
-                        product.getCategory(),
-                        product.getPrice(),
-                        product.getQuantity()
-                );
-                pw.append(format + "\n");
+                format = "\n" +
+                        String.format(
+                                Locale.US,
+                                "%s;%s;%s;%.2f;%s",
+                                product.getId(),
+                                product.getName(),
+                                product.getCategory(),
+                                product.getPrice(),
+                                product.getQuantity()
+                        );
+                pw.write(format);
+//                pw.append(format + "\n");
             }
             pw.close();
         } catch (FileNotFoundException e) {
@@ -174,7 +178,7 @@ public class CompanyController {
                 products.add(new Product(products.stream().mapToInt(p -> p.getId()).max().getAsInt() + 1,
                         tf_productName.getText(), combo_productCategory.getValue(),
                         Double.valueOf(tf_productPrice.getText()), Integer.valueOf(tf_productQuantity.getText())));
-                              saveProductsToFile();
+                saveProductsToFile();
             }
         }
     }
