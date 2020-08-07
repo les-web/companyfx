@@ -119,7 +119,7 @@ public class CompanyController {
                                 "%s;%s;%s;%.2f;%s",
                                 product.getId(),
                                 product.getName(),
-                                product.getCategory(),
+                                product.getCategory().getCategoryName(),
                                 product.getPrice(),
                                 product.getQuantity()
                         );
