@@ -188,6 +188,7 @@ public class CompanyController {
                         tf_productName.getText(), combo_productCategory.getValue(),
                         Double.valueOf(tf_productPrice.getText()), Integer.valueOf(tf_productQuantity.getText())));
                 saveProductsToFile();
+                setProductsIntoTable();
             }
         }
     }
@@ -217,7 +218,43 @@ public class CompanyController {
                             .equals(combo_category.getValue()))
                     .collect(Collectors.toList()));
         }
+
+        // filtrowanie po ilosci
+        ObservableList<Product> productToFilter = FXCollections.observableArrayList();
+
+        if (cb_less5.isSelected()) {
+
+            productToFilter.addAll(FXCollections.observableArrayList(filteredProducts.stream()
+                    .filter(product -> product.getQuantity() < 5)
+                    .collect(Collectors.toList())));
+        }
+        if (cb_medium.isSelected()) {
+
+            productToFilter.addAll(FXCollections.observableArrayList(filteredProducts.stream()
+                    .filter(product -> product.getQuantity() >= 5 && product.getQuantity() <= 10)
+                    .collect(Collectors.toList())));
+        }
+        if (cb_more10.isSelected()) {
+
+            productToFilter.addAll(FXCollections.observableArrayList(filteredProducts.stream()
+                    .filter(product -> product.getQuantity() > 10)
+                    .collect(Collectors.toList())));
+        }
+        ObservableList<Product> finalFilter = FXCollections.observableArrayList();
+        for (Product p1 : productToFilter) {
+            for (Product p2 : filteredProducts) {
+                if (p1.equals(p2)) {
+                    finalFilter.add(p1);
+
+                }
+
+            }
+        }
+
         tbl_products.setItems(filteredProducts);
+
+
+        // czyszczenie
         tf_search.clear();
         combo_category.setValue(null);
         cb_less5.setSelected(true);
