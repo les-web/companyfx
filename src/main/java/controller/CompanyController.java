@@ -20,6 +20,7 @@ import model.Product;
 
 import java.io.*;
 import java.nio.file.Paths;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
@@ -97,6 +98,20 @@ public class CompanyController {
         tc_name.setCellValueFactory(new PropertyValueFactory<>("name"));
         tc_category.setCellValueFactory(new PropertyValueFactory<>("category"));
         tc_price.setCellValueFactory(new PropertyValueFactory<>("price"));
+        // format walutowy
+        Locale locale = new Locale("pl", "PL");
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+        tc_price.setCellFactory(tc -> new TableCell<Product, Double>() {
+            @Override
+            protected void updateItem(Double price, boolean empty) {
+                super.updateItem(price, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(currencyFormat.format(price));
+                }
+            }
+        });
         tc_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         // przekazanie wartości do tabeli z ObservableList
         tbl_products.setItems(products);
@@ -205,63 +220,49 @@ public class CompanyController {
     }
 
     @FXML
+  //
     void filterAction(ActionEvent event) {
-        ObservableList<Product> filteredProducts =
-                FXCollections.observableArrayList(
-                        products.stream()
-                                .filter(product -> product.getName().toLowerCase()
-                                        .contains(tf_search.getText().toLowerCase()))
-                                .collect(Collectors.toList()));
-        if (combo_category.getValue() != null) {
+        ObservableList<Product> filteredProducts = FXCollections.observableArrayList(
+                products.stream()
+                        .filter(product -> product.getName().toLowerCase().contains(tf_search.getText().toLowerCase()))
+                        .collect(Collectors.toList()));
+        if (combo_category.getValue() != null){
             filteredProducts = FXCollections.observableArrayList(filteredProducts.stream()
-                    .filter(product -> product.getCategory()
-                            .equals(combo_category.getValue()))
+                    .filter(product -> product.getCategory().equals(combo_category.getValue()))
                     .collect(Collectors.toList()));
         }
-
-        // filtrowanie po ilosci
-        ObservableList<Product> productToFilter = FXCollections.observableArrayList();
-
-        if (cb_less5.isSelected()) {
-
-            productToFilter.addAll(FXCollections.observableArrayList(filteredProducts.stream()
+        // filtrowanie po ilości
+        ObservableList<Product> productsToFilter = FXCollections.observableArrayList();
+        if (cb_less5.isSelected()){
+            productsToFilter.addAll(FXCollections.observableArrayList(filteredProducts.stream()
                     .filter(product -> product.getQuantity() < 5)
                     .collect(Collectors.toList())));
         }
-        if (cb_medium.isSelected()) {
-
-            productToFilter.addAll(FXCollections.observableArrayList(filteredProducts.stream()
+        if (cb_medium.isSelected()){
+            productsToFilter.addAll(FXCollections.observableArrayList(filteredProducts.stream()
                     .filter(product -> product.getQuantity() >= 5 && product.getQuantity() <= 10)
                     .collect(Collectors.toList())));
         }
-        if (cb_more10.isSelected()) {
-
-            productToFilter.addAll(FXCollections.observableArrayList(filteredProducts.stream()
+        if (cb_more10.isSelected()){
+            productsToFilter.addAll(FXCollections.observableArrayList(filteredProducts.stream()
                     .filter(product -> product.getQuantity() > 10)
                     .collect(Collectors.toList())));
         }
         ObservableList<Product> finalFilter = FXCollections.observableArrayList();
-        for (Product p1 : productToFilter) {
-            for (Product p2 : filteredProducts) {
-                if (p1.equals(p2)) {
+        for (Product p1: productsToFilter) {
+            for (Product p2: filteredProducts) {
+                if (p1.equals(p2)){
                     finalFilter.add(p1);
-
                 }
-
             }
         }
-
-        tbl_products.setItems(filteredProducts);
-
-
-        // czyszczenie
+        tbl_products.setItems(finalFilter);
         tf_search.clear();
         combo_category.setValue(null);
         cb_less5.setSelected(true);
         cb_medium.setSelected(true);
         cb_more10.setSelected(true);
     }
-
     @FXML
     void selectAction(MouseEvent event) {
         Product product = tbl_products.getSelectionModel().getSelectedItem();
@@ -277,6 +278,57 @@ public class CompanyController {
 
 
     @FXML
-    void updateAction(ActionEvent event) {
+    void updateAction(ActionEvent event) throws IOException {
+        // zaznaczone w tabelce
+        Product product = tbl_products.getSelectionModel().getSelectedItem(); // odwołanie do obiektu zaznaczonego w tabeli
+
+        Dialog<Product> dialog = new Dialog<>();
+        dialog.setTitle("Edytuj produkt");
+        dialog.setHeaderText("Edytuj produkt");
+        // ustawienie kontrolek
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField tf_productName = new TextField();
+        tf_productName.setText(product.getName());
+        ComboBox<Category> combo_productCategory = new ComboBox<>();
+        combo_productCategory.setItems(FXCollections.observableArrayList(Category.values()));
+        combo_productCategory.setValue(product.getCategory());
+        TextField tf_productPrice = new TextField();
+        tf_productPrice.setText(String.valueOf(product.getPrice()));
+        TextField tf_productQuantity = new TextField();
+        tf_productQuantity.setText(String.valueOf(product.getQuantity()));
+
+        grid.add(tf_productName, 0, 0);
+        grid.add(combo_productCategory, 0, 1);
+        grid.add(tf_productPrice, 0, 2);
+        grid.add(tf_productQuantity, 0, 3);
+
+        dialog.getDialogPane().setContent(grid);
+        // przyciski
+        ButtonType btn_ok = new ButtonType("Edytuj", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(btn_ok);
+
+        Optional<Product> productOpt = dialog.showAndWait();
+        if (productOpt.isPresent()) {
+            if (!tf_productPrice.getText().matches("[0-9]+\\.{0,1}[0-9]{0,2}") ||
+                    !tf_productQuantity.getText().matches("[0-9]+")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Błąd danych");
+                alert.setHeaderText("Błąd danych. Produkt nie został dodany!");
+                alert.showAndWait();
+            } else {
+                product.setName(tf_productName.getText());
+                product.setCategory(combo_productCategory.getValue());
+                product.setPrice(Double.valueOf(tf_productPrice.getText()));
+                product.setQuantity(Integer.valueOf(tf_productQuantity.getText()));
+                saveProductsToFile();
+                products.clear();
+                getProductsFromFile();
+                setProductsIntoTable();
+            }
+        }
     }
 }
