@@ -1,7 +1,4 @@
 id;nazwa;kategoria;cena;lość
-1;2.0 TDI (150KM);silnik;15000.00;2
-2;reflektor BMW X3 (lewy);karoseria;6000.00;10
-3;lewarek;zawieszenie;1234.00;10
-4;lejce;silnik;345.67;77
-5;gaźnik Fiat126p;silnik;1234.56;10
-6;kierunkowskaz lewo-prawo-lub-stop;karoseria;456.98;67
+1;silnik;silnik;10,11;10
+2;kolo;zawieszenie;10,10;1
+3;kolo;zawieszenie;345,67;20

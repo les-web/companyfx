@@ -84,7 +84,9 @@ public class CompanyController {
                             .filter(category -> category.getCategoryName().equals(line[2])) // filtrowanie po nazwie kategorii
                             .findAny()                                                      // Optional<Category>
                             .get(),                                                          // Category
-                    Double.valueOf(line[3]), Integer.valueOf(line[4])));
+                    //              Double.valueOf(line[3]), Integer.valueOf(line[4])));
+                    Double.valueOf(line[3].replace(",", ".")), Integer.valueOf(line[4])));
+
         }
         scanner.close();
     }
@@ -116,11 +118,15 @@ public class CompanyController {
                 format = "\n" +
                         String.format(
                                 Locale.US,
-                                "%s;%s;%s;%.2f;%s",
+                                //                         "%d;%s;%s;%.2f;%d",
+                                "%d;%s;%s;%s;%d",
+
                                 product.getId(),
                                 product.getName(),
                                 product.getCategory().getCategoryName(),
-                                product.getPrice(),
+                                //                 product.getPrice(),
+
+                                String.format("%.2f", product.getPrice()).replace(".", ","),
                                 product.getQuantity()
                         );
                 pw.write(format);
