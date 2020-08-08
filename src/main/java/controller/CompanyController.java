@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class CompanyController {
     @FXML
@@ -45,7 +46,7 @@ public class CompanyController {
     @FXML
     private CheckBox cb_more10;
     @FXML
-    private ComboBox<?> combo_category;
+    private ComboBox<Category> combo_category;
     @FXML
     private Button btn_update;
     @FXML
@@ -104,6 +105,8 @@ public class CompanyController {
     public void initialize() throws FileNotFoundException {
         getProductsFromFile();
         setProductsIntoTable();
+        combo_category.setItems(FXCollections.observableArrayList(Category.values()));
+
     }
 
 
@@ -191,15 +194,50 @@ public class CompanyController {
 
     @FXML
     void deleteAction(ActionEvent event) {
+        Product product = tbl_products.getSelectionModel().getSelectedItem();
+        if (product != null) {
+            products.remove(product);
+            saveProductsToFile();
+            btn_delete.setDisable(true);
+            btn_update.setDisable(true);
+        }
     }
 
     @FXML
     void filterAction(ActionEvent event) {
+        ObservableList<Product> filteredProducts =
+                FXCollections.observableArrayList(
+                        products.stream()
+                                .filter(product -> product.getName().toLowerCase()
+                                        .contains(tf_search.getText().toLowerCase()))
+                                .collect(Collectors.toList()));
+        if (combo_category.getValue() != null) {
+            filteredProducts = FXCollections.observableArrayList(filteredProducts.stream()
+                    .filter(product -> product.getCategory()
+                            .equals(combo_category.getValue()))
+                    .collect(Collectors.toList()));
+        }
+        tbl_products.setItems(filteredProducts);
+        tf_search.clear();
+        combo_category.setValue(null);
+        cb_less5.setSelected(true);
+        cb_medium.setSelected(true);
+        cb_more10.setSelected(true);
     }
 
     @FXML
     void selectAction(MouseEvent event) {
+        Product product = tbl_products.getSelectionModel().getSelectedItem();
+        if (product != null) {
+            btn_delete.setDisable(false);
+            btn_update.setDisable(false);
+        } else {
+            btn_delete.setDisable(true);
+            btn_update.setDisable(true);
+        }
+
     }
+
 
     @FXML
     void updateAction(ActionEvent event) {
