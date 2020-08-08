@@ -34,13 +34,16 @@
          </font>
       </Label>
       <Separator prefWidth="200.0" />
-      <TableView fx:id="tbl_products" onMouseClicked="#selectAction" prefHeight="278.0" prefWidth="922.0">
+      <TableView fx:id="tbl_products" editable="true" onMouseClicked="#selectAction" prefHeight="278.0" prefWidth="922.0">
         <columns>
           <TableColumn fx:id="tc_name" minWidth="300.0" prefWidth="75.0" text="NAZWA" />
             <TableColumn fx:id="tc_category" minWidth="100.0" prefWidth="195.0" text="KATEGORIA" />
           <TableColumn fx:id="tc_price" minWidth="61.0" prefWidth="165.0" text="CENA" />
             <TableColumn fx:id="tc_quantity" minWidth="37.0" prefWidth="258.0" text="ILOŚĆ" />
         </columns>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
       </TableView>
       <Label alignment="CENTER" prefHeight="27.0" prefWidth="923.0" text="FILTROWANIE">
          <font>
