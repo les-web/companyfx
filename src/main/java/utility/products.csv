@@ -1,7 +1,6 @@
 id;nazwa;kategoria;cena;lość
 1;silnik;silnik;10,11;10
 3;felga 15 ';zawieszenie;234,76;1
-5;łódź;zawieszenie;234678,98;10
 6;dach;karoseria;3456,89;20
 7;koło 20;zawieszenie;345,76;10
 8;łożysko;silnik;7,77;7
@@ -10,3 +9,4 @@ id;nazwa;kategoria;cena;lość
 12;silnik 2TDI;silnik;3500,07;1
 13;koło 30;zawieszenie;134,56;15
 14;pompka paliwowa;silnik;750,23;7
+15;lusterko lewe Fiat 126p;karoseria;35,45;2

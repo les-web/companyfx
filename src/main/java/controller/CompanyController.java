@@ -317,7 +317,7 @@ public class CompanyController {
                     !tf_productQuantity.getText().matches("[0-9]+")) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Błąd danych");
-                alert.setHeaderText("Błąd danych. Produkt nie został dodany!");
+                alert.setHeaderText("Błąd danych. Produkt nie został zmieniony!");
                 alert.showAndWait();
             } else {
                 product.setName(tf_productName.getText());
