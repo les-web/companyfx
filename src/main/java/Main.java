@@ -3,7 +3,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+/*
+java zaawanasowana
+kurs
+sierpien 2020
+ */
 public class Main extends Application {
 
     @Override
